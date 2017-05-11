@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body onload="loadResources()">
+    <script>
+       function loadResources()
+       {
+          var image1 = new Image();
+          image1.onload = resourceTiming;
+          image1.src = 'https://www.w3.org/Icons/w3c_main.png';
+       }
+
+       function resourceTiming()
+       {
+           var resouce = window.performance.getEntriesByType("resource");
+           for (i = 0; i < resouce.length; i++)
+           {
+                var r = resouce[0];    
+                var loadtime = r.duration;
+                var dns = r.domainLookupEnd - r.domainLookupStart;
+                var tcp = r.connectEnd - r.connectStart;
+                var ttfb = r.responseStart - r.redirectStart;
+                var redirect = r.redirectEnd - r.redirectStart;
+                console.log(r.name);
+                console.log("loadtime: " + loadtime);
+                console.log("dns: " + dns);
+                console.log("tcp: " + tcp);
+                console.log("ttfb: " + ttfb);
+                console.log(r);
+                
+                if (r.initiatorType == "img")
+                {
+                    console.log("End to end resource fetch: "+ r.responseEnd - r.startTime);
+                }
+           }
+       }
+    </script>
+    <img id="image0" src="https://www.w3.org/Icons/w3c_home.png">
+  </body>
+</html>
